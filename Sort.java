@@ -7,81 +7,114 @@ import java.util.Comparator;
  *
  * @author CPSC 221 Instructors
  */
-public class Sort {	
+public class Sort {
 	/**
-	 * Returns a new list that implements the IndexedUnsortedList interface. 
-	 * As configured, uses WrappedDLL. Must be changed if using 
-	 * your own IUDoubleLinkedList class. 
+	 * Returns a new list that implements the IndexedUnsortedList interface.
+	 * As configured, uses WrappedDLL. Must be changed if using
+	 * your own IUDoubleLinkedList class.
 	 * 
 	 * @return a new list that implements the IndexedUnsortedList interface
 	 */
 	private static <E> IndexedUnsortedList<E> newList() {
 		return new WrappedDLL<E>();
 	}
-	
+
 	/**
-	 * Sorts a list that implements the IndexedUnsortedList interface 
+	 * Sorts a list that implements the IndexedUnsortedList interface
 	 * using compareTo() method defined by class of objects in list.
 	 * DO NOT MODIFY THIS METHOD
 	 * 
 	 * @param <E>
-	 *            The class of elements in the list, must extend Comparable
+	 *             The class of elements in the list, must extend Comparable
 	 * @param list
-	 *            The list to be sorted, implements IndexedUnsortedList interface 
-	 * @see IndexedUnsortedList 
+	 *             The list to be sorted, implements IndexedUnsortedList interface
+	 * @see IndexedUnsortedList
 	 */
 	public static <E extends Comparable<E>> void sort(IndexedUnsortedList<E> list) {
 		quicksort(list);
 	}
 
 	/**
-	 * Sorts a list that implements the IndexedUnsortedList interface 
+	 * Sorts a list that implements the IndexedUnsortedList interface
 	 * using given Comparator.
 	 * DO NOT MODIFY THIS METHOD
 	 * 
 	 * @param <E>
-	 *            The class of elements in the list
+	 *             The class of elements in the list
 	 * @param list
-	 *            The list to be sorted, implements IndexedUnsortedList interface 
+	 *             The list to be sorted, implements IndexedUnsortedList interface
 	 * @param c
-	 *            The Comparator used
-	 * @see IndexedUnsortedList 
+	 *             The Comparator used
+	 * @see IndexedUnsortedList
 	 */
-	public static <E> void sort(IndexedUnsortedList <E> list, Comparator<E> c) {
+	public static <E> void sort(IndexedUnsortedList<E> list, Comparator<E> c) {
 		quicksort(list, c);
 	}
-	
+
 	/**
-	 * Quicksort algorithm to sort objects in a list 
-	 * that implements the IndexedUnsortedList interface, 
+	 * Quicksort algorithm to sort objects in a list
+	 * that implements the IndexedUnsortedList interface,
 	 * using compareTo() method defined by class of objects in list.
 	 * DO NOT MODIFY THIS METHOD SIGNATURE
 	 * 
 	 * @param <E>
-	 *            The class of elements in the list, must extend Comparable
+	 *             The class of elements in the list, must extend Comparable
 	 * @param list
-	 *            The list to be sorted, implements IndexedUnsortedList interface 
+	 *             The list to be sorted, implements IndexedUnsortedList interface
 	 */
 	private static <E extends Comparable<E>> void quicksort(IndexedUnsortedList<E> list) {
-		// TODO: Implement recursive quicksort algorithm 
+		// Base Case
+		if (list.size() <= 1) {
+			return;
+		}
+
+		// Sub lists
+		IndexedUnsortedList<E> left = new WrappedDLL<>();
+		IndexedUnsortedList<E> right = new WrappedDLL<>();
+
+		E pivot = list.removeFirst();
+
+		// Move elements into left or right
+		while (!list.isEmpty()) {
+			E element = list.removeFirst();
+			if (element.compareTo(pivot) < 0) {
+				left.addToRear(element);
+			} else {
+				right.addToRear(element);
+			}
+		}
+
+		// Recursively sort
+		quicksort(left);
+		quicksort(right);
+
+		// Rebuild the list
+		while (!left.isEmpty()) {
+			list.addToRear(left.removeFirst());
+		}
+
+		list.addToRear(pivot);
+
+		while (!right.isEmpty()) {
+			list.addToRear(right.removeFirst());
+		}
 	}
-		
+
 	/**
-	 * Quicksort algorithm to sort objects in a list 
+	 * Quicksort algorithm to sort objects in a list
 	 * that implements the IndexedUnsortedList interface,
 	 * using the given Comparator.
 	 * DO NOT MODIFY THIS METHOD SIGNATURE
 	 * 
 	 * @param <E>
-	 *            The class of elements in the list
+	 *             The class of elements in the list
 	 * @param list
-	 *            The list to be sorted, implements IndexedUnsortedList interface 
+	 *             The list to be sorted, implements IndexedUnsortedList interface
 	 * @param c
-	 *            The Comparator used
+	 *             The Comparator used
 	 */
 	private static <E> void quicksort(IndexedUnsortedList<E> list, Comparator<E> c) {
 		// TODO: Implement recursive quicksort algorithm using Comparator
-
 	}
-	
+
 }
