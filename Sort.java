@@ -115,6 +115,36 @@ public class Sort {
 	 */
 	private static <E> void quicksort(IndexedUnsortedList<E> list, Comparator<E> c) {
 		// TODO: Implement recursive quicksort algorithm using Comparator
+
+		if (list.size() <= 1) {
+			return;
+		}
+
+		IndexedUnsortedList<E> left = new WrappedDLL<>();
+		IndexedUnsortedList<E> right = new WrappedDLL<>();
+
+		E pivot = list.removeFirst();
+
+		while (!list.isEmpty()) {
+			E element = list.removeFirst();
+			if (c.compare(element, pivot) <= 0) {
+				left.addToRear(element);
+			}
+			if (c.compare(element, pivot) > 0) {
+				right.addToRear(element);
+			}
+		}
+
+		quicksort(left, c);
+		quicksort(right, c);
+
+		while (!left.isEmpty()) {
+			list.addToRear(left.removeFirst());
+		}
+		list.addToRear(pivot);
+		while (!right.isEmpty()) {
+			list.addToRear(right.removeFirst());
+		}
 	}
 
 }
